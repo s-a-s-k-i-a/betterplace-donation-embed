@@ -3,7 +3,7 @@
  * Plugin Name:       Betterplace Donation Embed
  * Plugin URI:        https://github.com/s-a-s-k-i-a/betterplace-donation-embed
  * Description:       Bindet das betterplace.org-Spendenformular sauber per Shortcode und Gutenberg-Block ein — ohne den fragilen Upstream-JS-Loader, der den globalen Lexical-Scope verschmutzt.
- * Version:           0.1.4
+ * Version:           0.1.5
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            wp-studio.dev
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BPDE_VERSION', '0.1.4' );
+define( 'BPDE_VERSION', '0.1.5' );
 define( 'BPDE_PLUGIN_FILE', __FILE__ );
 define( 'BPDE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BPDE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

@@ -4,7 +4,7 @@ Tags:              betterplace, donation, spende, spendenformular, iframe, short
 Requires at least: 6.0
 Tested up to:      6.6
 Requires PHP:      7.4
-Stable tag:        0.1.4
+Stable tag:        0.1.5
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ Ja — `receiver_type="fundraising_event"` oder `receiver_type="organisation"` s
 Der iframe-resizer ist genau der Code, der den `$`-Konflikt im Upstream-Loader verursacht. Stattdessen wird hier eine feste Höhe gesetzt (Default 800 px), die für Step 1 + Spenderdaten ausreicht.
 
 == Changelog ==
+
+= 0.1.5 =
+* Follow-up zu v0.1.4: Die Mobile-Media-Query ist jetzt tatsächlich wirksam. In v0.1.4 stand `width: <px>` inline am Wrapper, was die Media-Query aus dem `<style>`-Block durch CSS-Specifity überschrieb und damit den Smartphone-Fallback auf 100 % verhinderte. v0.1.5 schreibt **beide** Regeln (Default + Mobile-Override) ins per-instance `<style>` ohne Inline-Width — Media-Query greift jetzt wie erwartet bei viewport < user-width.
 
 = 0.1.4 =
 * Responsiveness-Fix: Auf Viewports schmaler als die konfigurierte Iframe-Breite (z. B. Smartphone bei eingestellten 600 px) füllt das Iframe jetzt die verfügbare Breite des Containers statt horizontal überzulaufen. Realisiert via instance-scopiertem `@media (max-width: <user-width>px)`-Block, der die feste Width auf 100 % überschreibt.

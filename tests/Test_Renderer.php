@@ -231,48 +231,52 @@ class Test_Renderer extends WP_UnitTestCase {
 				'height'     => 10000, // clamped to 2000
 			)
 		);
-		$this->assertStringContainsString( 'width:200px', $html );
+		// Clamped width appears in the per-instance <style> base rule.
+		$this->assertMatchesRegularExpression( '/\.bpde-embed--i\d+\{width:200px;/', $html );
 		$this->assertStringContainsString( 'height:2000px', $html );
 	}
 
 	/**
-	 * Regression (v0.1.3): the wrapper must use explicit `width` (not just
-	 * `max-width`) so the iframe stays at the configured size inside flex
-	 * containers (Divi Pixel popups etc.) where block descendants would
-	 * otherwise shrink to intrinsic content width.
+	 * Regression (v0.1.3): the rendered styles must declare the configured
+	 * width (not just a max-width) so the iframe stays at the configured size
+	 * inside flex containers (Divi Pixel popups etc.) where block descendants
+	 * would otherwise shrink to intrinsic content width.
 	 *
 	 * @covers ::render
 	 */
-	public function test_render_wrapper_uses_explicit_width_and_responsive_max_width() {
+	public function test_render_emits_explicit_width_with_responsive_max() {
 		$html = $this->renderer()->render( array( 'project_id' => 4667, 'width' => 600 ) );
 
-		$this->assertStringContainsString( 'width:600px;max-width:100%', $html );
+		$this->assertMatchesRegularExpression(
+			'/<style>\.bpde-embed--i\d+\{width:600px;max-width:100%;margin-inline:auto;\}/',
+			$html
+		);
 
-		// The wrapper's own style attribute must not use `max-width:600px`
-		// (that would re-introduce the flex-shrink bug). It's fine for the
-		// scoped media query to contain "max-width:600px" — that's the
-		// breakpoint, not the wrapper rule.
-		preg_match( '/style="([^"]*)"/', $html, $m, 0, strpos( $html, '<div class="bpde-embed' ) );
-		$this->assertNotEmpty( $m[1] );
-		$this->assertStringNotContainsString( 'max-width:600px', $m[1] );
+		// The wrapper itself must NOT carry an inline style attribute — that
+		// would beat the media query on specificity and prevent the smartphone
+		// fallback from applying.
+		preg_match( '/<div class="bpde-embed bpde-embed--i\d+"([^>]*)>/', $html, $m );
+		$this->assertNotEmpty( $m );
+		$this->assertStringNotContainsString( 'style=', $m[1] );
 	}
 
 	/**
-	 * v0.1.4: the wrapper must carry a per-instance class plus an inline
-	 * media query that collapses width to 100% when the viewport is narrower
-	 * than the user-configured width (smartphone responsiveness).
+	 * v0.1.4 + v0.1.5: each instance carries a per-instance class plus a
+	 * scoped <style> with both the base width rule and a media query that
+	 * collapses width to 100% when the viewport is narrower than the
+	 * user-configured width (smartphone responsiveness).
 	 *
 	 * @covers ::render
 	 */
 	public function test_render_emits_responsive_media_query_for_configured_width() {
 		$html = $this->renderer()->render( array( 'project_id' => 4667, 'width' => 720 ) );
 
-		// One per-instance class on the wrapper.
+		// Per-instance class on the wrapper.
 		$this->assertMatchesRegularExpression( '/class="bpde-embed bpde-embed--i\d+"/', $html );
 
 		// Scoped media query overrides width to 100% below the configured width.
 		$this->assertMatchesRegularExpression(
-			'/<style>@media\s*\(max-width:720px\)\{\.bpde-embed--i\d+\{width:100%;\}\}<\/style>/',
+			'/@media\s*\(max-width:720px\)\{\.bpde-embed--i\d+\{width:100%;\}\}/',
 			$html
 		);
 	}

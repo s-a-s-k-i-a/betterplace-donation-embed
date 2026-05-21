@@ -113,32 +113,32 @@ class Betterplace_Donation_Embed_Renderer {
 		$width          = (int) $cfg['width'];
 
 		/*
-		 * Width is set in two ways:
+		 * Both width rules live in the per-instance <style> block (not inline
+		 * on the wrapper), so the media query can override the default width
+		 * naturally. If `width: <px>` were inline, the inline style's higher
+		 * specificity would beat the media query rule and the smartphone
+		 * fallback would never apply.
 		 *
-		 * 1. Inline `width: <px>; max-width: 100%`. Forces the ancestor chain
-		 *    to grow to the configured size inside flex containers (e.g. Divi
-		 *    Pixel popups), where block descendants would otherwise shrink to
-		 *    their content's intrinsic width.
-		 *
-		 * 2. A scoped media query (`max-width: <user-width>px`) that overrides
-		 *    width to 100% on viewports narrower than the configured size — so
-		 *    on smartphones the iframe fills the available width instead of
-		 *    overflowing horizontally. The media query is per-instance because
-		 *    each shortcode/block can carry a different configured width.
+		 * Two rules emitted per instance:
+		 *   - base:   width: <user-px>  (propagates desired size up through
+		 *             flex containers like Divi Pixel popups)
+		 *   - mobile: @media (max-width: <user-px>) { width: 100% }  (drops
+		 *             to fill-available on viewports narrower than configured)
 		 */
-		$wrapper_style    = sprintf( 'width:%1$dpx;max-width:100%%;margin-inline:auto;', $width );
-		$iframe_style     = sprintf( 'display:block;border:0;width:100%%;height:%dpx;background:transparent;', (int) $cfg['height'] );
-		$responsive_style = sprintf(
-			'<style>@media (max-width:%1$dpx){.%2$s{width:100%%;}}</style>',
-			$width,
-			$instance_class
+		$instance_style = sprintf(
+			'<style>.%1$s{width:%2$dpx;max-width:100%%;margin-inline:auto;}@media (max-width:%2$dpx){.%1$s{width:100%%;}}</style>',
+			$instance_class,
+			$width
+		);
+		$iframe_style   = sprintf(
+			'display:block;border:0;width:100%%;height:%dpx;background:transparent;',
+			(int) $cfg['height']
 		);
 
-		return $responsive_style . sprintf(
-			'<div class="bpde-embed %1$s" data-project-id="%2$d" style="%3$s"><iframe src="%4$s" title="%5$s" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="%6$s"></iframe><p class="bpde-fallback" style="text-align:center;margin:.75em 0 0;font-size:.9em;"><a href="%7$s" target="_blank" rel="noopener">%8$s</a></p></div>',
+		return $instance_style . sprintf(
+			'<div class="bpde-embed %1$s" data-project-id="%2$d"><iframe src="%3$s" title="%4$s" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="%5$s"></iframe><p class="bpde-fallback" style="text-align:center;margin:.75em 0 0;font-size:.9em;"><a href="%6$s" target="_blank" rel="noopener">%7$s</a></p></div>',
 			esc_attr( $instance_class ),
 			(int) $cfg['receiver_id'],
-			esc_attr( $wrapper_style ),
 			esc_url( $url ),
 			esc_attr( $title ),
 			esc_attr( $iframe_style ),
