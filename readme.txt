@@ -1,6 +1,6 @@
-=== Betterplace Donation Embed ===
+=== Betterplace Spendenformular für WordPress ===
 Contributors:      saskialund
-Tags:              betterplace, donation, spende, spendenformular, iframe, shortcode, gutenberg, block
+Tags:              betterplace, spende, spendenformular, donation, gemeinnützig, verein, nonprofit, gutenberg, shortcode
 Requires at least: 6.0
 Tested up to:      6.6
 Requires PHP:      7.4
@@ -8,69 +8,127 @@ Stable tag:        0.1.5
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Bindet das betterplace.org-Spendenformular sauber per Shortcode oder Gutenberg-Block ein — ohne den fragilen Upstream-JS-Loader.
+Spendenformular von betterplace.org direkt in deiner WordPress-Seite einbinden — kostenlos, ohne Konsolen-Fehler, ohne endlos drehende Lade-Spinner.
 
 == Description ==
 
-Das Plugin rendert einen statischen `<iframe>` mit der gleichen URL, die der offizielle betterplace-Loader (`load_donation_iframe.js`) sonst dynamisch baut — verzichtet aber komplett auf das JS-Snippet. Damit verschwinden zwei bekannte Probleme:
+**Für wen ist dieses Plugin?**
 
-1. **`SyntaxError: Identifier '$' has already been declared`** in der Browser-Console, ausgelöst dadurch, dass der Loader auf Top-Level eine bare `$`-Variable in den globalen Lexical-Scope schreibt.
-2. **Spinner-Endlos-Popup**, wenn der Loader durch den Parse-Fehler abbricht, bevor er den Iframe erzeugt.
+Du sammelst über [betterplace.org](https://www.betterplace.org/) Spenden für deinen Verein, deine Stiftung oder dein Projekt — und betreibst eine WordPress-Website? Dann hilft dir dieses Plugin, das betterplace-Spendenformular direkt auf einer Seite, in einem Beitrag oder in einem Popup auf deiner Website zu zeigen.
 
-= Funktionen =
+So müssen deine Besucher:innen nicht erst zu betterplace klicken, um zu spenden — sie können direkt bei dir spenden. Erfahrungsgemäß steigert das die Spendenbereitschaft, weil weniger Klicks zwischen "ich will spenden" und "abgeschickt" liegen.
 
-* Shortcode `[betterplace_donation project_id="4667"]`
-* Gutenberg-Block „Betterplace-Spendenformular" mit Live-Vorschau im Editor
-* Settings-Seite unter „Einstellungen → Spendenformular" für Site-weite Defaults
-* Vollständige Attribut-Konfiguration: Projekt-ID, Farbe, Hintergrund, Standardbetrag, Intervall, Zahlungsart, Sprache, Iframe-Größe
-* Lazy-Loading, sichere `referrerpolicy`, Fallback-Link für Adblocker/CSP-Probleme
-* Sauberes Output-Escaping (WPCS-konform)
+**Was das Plugin macht (und was es bewusst NICHT macht)**
 
-= Anforderungen =
+Es bindet das offizielle Spendenformular von betterplace.org in einem Iframe ein. Sämtliche Spende, Bezahlung, Quittungs-Mail läuft direkt zwischen Spender:in und betterplace — genauso wie wenn du nur einen Link gesetzt hättest. Deine Website ist nur der Anzeige-Rahmen, sie speichert weder Spenden noch Zahlungsdaten.
 
-* WordPress 6.0+
-* PHP 7.4+
+**Was du gegenüber dem offiziellen betterplace-Snippet gewinnst**
+
+* Keine Konsolen-Fehler mehr ("Identifier '$' has already been declared"), die in manchen WordPress-Setups durch den betterplace-Loader entstehen
+* Keine endlos drehenden Lade-Spinner, weil der Loader-JS aufgrund desselben Bugs vorzeitig abbricht
+* Volle Kontrolle über Farbe, Standard-Betrag, Intervall, Zahlungsart, Spracheinstellung — über die Plugin-Einstellungen, nicht über Code
+* Automatische Anpassung der Breite auf Smartphones (mobile-tauglich out of the box)
+* Auto-Updates direkt im WordPress-Backend, ohne dass du einen Lizenzschlüssel eintragen musst
+
+**Funktionen**
+
+* **Gutenberg-Block** „Betterplace-Spendenformular" mit Live-Vorschau im Editor
+* **Shortcode** `[betterplace_donation project_id="…"]` für klassische Editoren, Sidebars, Popups und Page-Builder
+* **Einstellungs-Seite** unter „Einstellungen → Spendenformular" für Site-weite Standardwerte
+* Konfigurierbar: Projekt-ID, Akzentfarbe, Hintergrund, Standard-Betrag, Intervall (einmalig/monatlich/jährlich), vorausgewählte Zahlungsart, Sprache (Deutsch/Englisch), Iframe-Größe
+* Funktioniert mit Spendenprojekten, Spendenaktionen und Organisations-Spenden
+* Funktioniert mit gängigen Popup-Lösungen, auch in Kombination mit Divi Pixel
+* Auto-Update ohne Lizenzschlüssel-Eingabe
+
+**Voraussetzungen**
+
+* WordPress 6.0 oder neuer
+* PHP 7.4 oder neuer
+
+(Beides ist bei aktuellen WordPress-Installationen Standard.)
+
+**Wer steckt dahinter?**
+
+[isla studio](https://isla-stud.io) — wir bauen WordPress-Websites und -Plugins, schwerpunktmäßig für deutsche Vereine und Nonprofits. Das Plugin entstand aus konkreter Arbeit für den Tierschutzverein Hannover.
 
 == Installation ==
 
-1. Plugin-Ordner nach `wp-content/plugins/` kopieren oder per Git klonen.
-2. Im WordPress-Backend unter „Plugins" aktivieren.
-3. Standardwerte unter „Einstellungen → Spendenformular" pflegen (optional).
-4. Shortcode oder Block in eine Seite/Post einfügen.
+1. Plugin-ZIP von [isla-stud.io](https://isla-stud.io/downloads/betterplace-donation-formular-fuer-wordpress/) herunterladen
+2. WordPress-Backend → Plugins → Installieren → Plugin hochladen → ZIP wählen → Jetzt installieren
+3. Aktivieren
+4. (Optional) Unter „Einstellungen → Spendenformular" deine Standard-Projekt-ID und Farben eintragen
+5. Block oder Shortcode auf eine Seite einfügen — fertig
 
 == Frequently Asked Questions ==
 
-= Welche Projekt-ID brauche ich? =
+= Brauche ich einen Lizenzschlüssel? =
 
-Die numerische ID aus der betterplace-URL, z. B. `4667` aus `https://www.betterplace.org/de/projects/4667-tierheim-hannover`.
+Nein. Das Plugin ist kostenlos und kommt mit eingebauten Auto-Updates. Einfach installieren und nutzen.
 
-= Funktioniert das mit Spendenaktionen statt Projekten? =
+= Wo finde ich meine Projekt-ID? =
 
-Ja — `receiver_type="fundraising_event"` oder `receiver_type="organisation"` setzen und `receiver_id` mit der passenden ID belegen.
+In der URL deines betterplace-Projekts. Beispiel: bei `https://www.betterplace.org/de/projects/4667-tierheim-hannover` ist die Projekt-ID `4667`.
 
-= Warum kein iframe-resizer? =
+= Funktioniert das auch mit Spendenaktionen oder Organisations-Spenden statt einzelnen Projekten? =
 
-Der iframe-resizer ist genau der Code, der den `$`-Konflikt im Upstream-Loader verursacht. Stattdessen wird hier eine feste Höhe gesetzt (Default 800 px), die für Step 1 + Spenderdaten ausreicht.
+Ja. Im Block-Editor kannst du den Empfängertyp wählen (Projekt, Spendenaktion, Organisation). Beim Shortcode: `receiver_type="fundraising_event"` oder `receiver_type="organisation"` setzen und die passende ID hinterlegen.
+
+= Was passiert mit Daten meiner Spender:innen? =
+
+Das Plugin sammelt **keine** Daten — es zeigt das offizielle Spendenformular von betterplace.org in einem Iframe. Die Spende, die Eingaben, die Zahlung laufen direkt zwischen Spender:in und betterplace. Datenschutzrechtlich genauso wie wenn du einen Link zu betterplace setzt.
+
+= Kann ich mehrere Spendenformulare auf einer Seite einbinden? =
+
+Ja. Jeder Block und jeder Shortcode kann eine andere Projekt-ID und andere Einstellungen nutzen — sie kommen sich nicht in die Quere.
+
+= Funktioniert das auf Smartphones? =
+
+Ja. Ab Version 0.1.5 passt sich die Breite des Iframes automatisch an die Bildschirmgröße an.
+
+= Funktioniert das mit Divi-Popups, Elementor-Popups oder Popup Maker? =
+
+Ja. Speziell für Divi Pixel Popups wurde das Plugin getestet und ein bekannter Layout-Bug behoben.
+
+= Wer hilft mir, wenn etwas nicht funktioniert? =
+
+[GitHub-Issue öffnen](https://github.com/s-a-s-k-i-a/betterplace-donation-embed/issues/new) oder eine Mail an `hello@isla-stud.io`.
+
+= Ich bin Entwickler:in und brauche tiefere Doku =
+
+Komplette technische Doku (Architektur, API, Filter, Konstanten, Tests, CI) liegt in [docs/DEVELOPERS.md](https://github.com/s-a-s-k-i-a/betterplace-donation-embed/blob/main/docs/DEVELOPERS.md) im Quellcode-Repo.
+
+== Screenshots ==
+
+1. Das Spendenformular auf einer WordPress-Seite (Desktop-Ansicht).
+2. Dasselbe Formular auf einem Smartphone — automatisch angepasst.
+3. Gutenberg-Block-Einstellungen im Editor (Projekt-ID, Farben, Betrag, Intervall, …).
+4. Einstellungs-Seite unter „Einstellungen → Spendenformular" für Site-weite Defaults.
 
 == Changelog ==
 
 = 0.1.5 =
-* Follow-up zu v0.1.4: Die Mobile-Media-Query ist jetzt tatsächlich wirksam. In v0.1.4 stand `width: <px>` inline am Wrapper, was die Media-Query aus dem `<style>`-Block durch CSS-Specifity überschrieb und damit den Smartphone-Fallback auf 100 % verhinderte. v0.1.5 schreibt **beide** Regeln (Default + Mobile-Override) ins per-instance `<style>` ohne Inline-Width — Media-Query greift jetzt wie erwartet bei viewport < user-width.
+* Smartphone-Anpassung greift jetzt zuverlässig. Auf schmalen Bildschirmen füllt das Spendenformular automatisch die verfügbare Breite, statt mit fester Pixelgröße über den Rand hinauszulaufen.
 
 = 0.1.4 =
-* Responsiveness-Fix: Auf Viewports schmaler als die konfigurierte Iframe-Breite (z. B. Smartphone bei eingestellten 600 px) füllt das Iframe jetzt die verfügbare Breite des Containers statt horizontal überzulaufen. Realisiert via instance-scopiertem `@media (max-width: <user-width>px)`-Block, der die feste Width auf 100 % überschreibt.
-* Auto-Update-Fix: Das Plugin aktiviert die Shared-Lizenz beim ersten `admin_init` automatisch gegen den EDD-Store (`edd_action=activate_license` mit `home_url()`). Ohne diese Aktivierung antwortete EDD-SL beim Update-Versuch mit HTTP 401 ("Aktualisierungs-Paket nicht verfügbar"). Idempotent: re-aktiviert nur bei URL-Wechsel oder nach 30 Tagen.
+* Auto-Update-Fix: Updates werden jetzt zuverlässig im WordPress-Backend angezeigt und installiert, ohne dass du einen Lizenzschlüssel eintragen musst.
+* Smartphone-Anpassung eingeführt (siehe auch 0.1.5).
 
 = 0.1.3 =
-* Bug-Fix: das Iframe wurde in `display: flex`-Containern (z. B. Divi-Pixel-Popups) auf die intrinsische Breite des Fallback-Links geschrumpft (~320 px) statt der konfigurierten Breite (z. B. 600 px). Der Wrapper nutzt jetzt `width: <px>` statt `max-width: <px>`, sodass die Breite die Container-Kette nach oben propagiert. `max-width: 100%` sorgt weiterhin für Responsiveness auf schmalen Viewports.
+* Layout-Fix für Divi-Pixel-Popups: das Formular wird nun in voller konfigurierter Breite gezeigt, statt auf ~320 px geschrumpft zu werden.
 
 = 0.1.2 =
-* Zero-Config-Auto-Update: das Plugin enthält ab sofort einen Shared-License-Key für die EDD-Software-Licensing-Update-API. Es ist kein manueller Lizenzschlüssel-Eintrag durch die Nutzer:innen mehr nötig — Updates werden automatisch im WP-Backend angezeigt und können wie bei jedem anderen Plugin direkt installiert werden.
-* Override: Self-Hoster können `define( 'BPDE_EDD_LICENSE_KEY', '…' );` setzen oder den Filter `bpde_license_key` nutzen.
+* Auto-Updates ohne Lizenzschlüssel-Eingabe: einmal installieren, danach kommen Updates direkt im WordPress-Backend.
 
 = 0.1.1 =
-* Auto-Update-Client via Easy Digital Downloads Software Licensing: das Plugin fragt nun bei `https://isla-stud.io` (Item-ID 3610) nach neuen Versionen, sodass Updates im WP-Backend wie bei jedem anderen Plugin angezeigt und installiert werden können. Kein Lizenzschlüssel erforderlich (kostenloser Download).
-* Opt-out: `define( 'BPDE_DISABLE_UPDATER', true );` in `wp-config.php` oder Filter `bpde_disable_updater`.
+* Update-Mechanismus über isla-stud.io eingebaut.
 
 = 0.1.0 =
-* Erstveröffentlichung: Shortcode, Block, Settings-Page, PHPUnit + Smoke + Playwright-E2E-Tests.
+* Erstveröffentlichung: Shortcode, Gutenberg-Block, Einstellungs-Seite, Test-Setup.
+
+== Upgrade Notice ==
+
+= 0.1.5 =
+Smartphone-Anpassung greift jetzt zuverlässig. Empfohlen für alle, die das Formular in Popups oder schmalen Spalten einbinden.
+
+= 0.1.4 =
+Auto-Updates funktionieren jetzt direkt aus dem WordPress-Backend. Empfohlenes Update für alle Installationen.
