@@ -56,7 +56,23 @@ This plugin sidesteps the whole problem by **never loading the upstream JS**. It
 
 ## Installation
 
-### From source
+### From the isla studio store (recommended — auto-updates)
+
+Download the latest release ZIP from **[isla-stud.io/downloads/betterplace-donation-formular-fuer-wordpress](https://isla-stud.io/downloads/betterplace-donation-formular-fuer-wordpress/)** and install it via **Plugins → Add New → Upload Plugin**. No license key required (free download).
+
+After installation the plugin checks `isla-stud.io` for new versions and shows updates in **Plugins → Installed Plugins** just like any other WordPress plugin. To disable the update check (e.g. for sites that block outbound HTTP), add to `wp-config.php`:
+
+```php
+define( 'BPDE_DISABLE_UPDATER', true );
+```
+
+Or via filter: `add_filter( 'bpde_disable_updater', '__return_true' );`.
+
+### From this GitHub release (manual — no auto-updates)
+
+Download `betterplace-donation-embed-X.Y.Z.zip` from the [releases page](https://github.com/s-a-s-k-i-a/betterplace-donation-embed/releases) and install it via **Plugins → Add New → Upload Plugin**.
+
+### From source (dev install)
 
 ```bash
 cd wp-content/plugins

@@ -8,6 +8,8 @@
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/tests/e2e/*</exclude-pattern>
+	<!-- Vendored: EDD-SL Plugin Updater (upstream class, not our code) -->
+	<exclude-pattern>*/includes/class-edd-sl-plugin-updater.php</exclude-pattern>
 
 	<arg name="extensions" value="php"/>
 	<arg name="colors"/>

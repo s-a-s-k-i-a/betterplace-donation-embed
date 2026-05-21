@@ -4,7 +4,7 @@ Tags:              betterplace, donation, spende, spendenformular, iframe, short
 Requires at least: 6.0
 Tested up to:      6.6
 Requires PHP:      7.4
-Stable tag:        0.1.0
+Stable tag:        0.1.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ Ja — `receiver_type="fundraising_event"` oder `receiver_type="organisation"` s
 Der iframe-resizer ist genau der Code, der den `$`-Konflikt im Upstream-Loader verursacht. Stattdessen wird hier eine feste Höhe gesetzt (Default 800 px), die für Step 1 + Spenderdaten ausreicht.
 
 == Changelog ==
+
+= 0.1.1 =
+* Auto-Update-Client via Easy Digital Downloads Software Licensing: das Plugin fragt nun bei `https://isla-stud.io` (Item-ID 3610) nach neuen Versionen, sodass Updates im WP-Backend wie bei jedem anderen Plugin angezeigt und installiert werden können. Kein Lizenzschlüssel erforderlich (kostenloser Download).
+* Opt-out: `define( 'BPDE_DISABLE_UPDATER', true );` in `wp-config.php` oder Filter `bpde_disable_updater`.
 
 = 0.1.0 =
 * Erstveröffentlichung: Shortcode, Block, Settings-Page, PHPUnit + Smoke + Playwright-E2E-Tests.
