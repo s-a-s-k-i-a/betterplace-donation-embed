@@ -231,7 +231,22 @@ class Test_Renderer extends WP_UnitTestCase {
 				'height'     => 10000, // clamped to 2000
 			)
 		);
-		$this->assertStringContainsString( 'max-width:200px', $html );
+		$this->assertStringContainsString( 'width:200px', $html );
 		$this->assertStringContainsString( 'height:2000px', $html );
+	}
+
+	/**
+	 * Regression: the wrapper must use explicit `width` (not just `max-width`)
+	 * so the iframe stays at the configured size inside flex containers
+	 * (Divi Pixel popups etc.) where block descendants would otherwise shrink
+	 * to intrinsic content width.
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_wrapper_uses_explicit_width_and_responsive_max_width() {
+		$html = $this->renderer()->render( array( 'project_id' => 4667, 'width' => 600 ) );
+
+		$this->assertStringContainsString( 'width:600px;max-width:100%', $html );
+		$this->assertStringNotContainsString( 'max-width:600px', $html );
 	}
 }
