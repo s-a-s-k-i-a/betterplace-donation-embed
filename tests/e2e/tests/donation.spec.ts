@@ -1,15 +1,17 @@
 /**
  * E2E: betterplace-donation-embed.
  *
- * Verifies:
- *   1. The shortcode renders an iframe with the expected attributes on the frontend.
- *   2. The block is registered with WordPress (queryable via REST).
- *   3. The frontend never references the upstream load_donation_iframe.js.
+ * Verifies on the public frontend:
+ *   1. The shortcode renders exactly one iframe with the expected attributes.
+ *   2. A fallback link to betterplace.org is present below the iframe.
+ *   3. The page never references the upstream load_donation_iframe.js
+ *      (the whole point of this plugin).
  *
- * Editor UI interaction (insert block via inserter) is intentionally not tested
- * here — that flow is highly coupled to specific Gutenberg/WP versions and
- * tends to be flaky in CI. Block registration via REST + frontend rendering
- * give us the meaningful coverage at much lower flakiness cost.
+ * Block registration is intentionally not tested here — it's implicit in
+ * block.json + register_block_type() being executed during plugin boot.
+ * Editor UI interaction is intentionally not tested either — that flow is
+ * highly coupled to specific Gutenberg/WP versions and tends to be flaky.
+ * PHPUnit + the smoke test cover the registration paths from the PHP side.
  */
 import { test, expect, request as pwRequest } from '@playwright/test';
 import { execSync } from 'node:child_process';
@@ -94,18 +96,3 @@ test.describe( 'Frontend rendering via shortcode', () => {
 	} );
 } );
 
-test.describe( 'Block registration (REST)', () => {
-	test( 'block "betterplace-embed/donation" is registered', async ( {
-		baseURL,
-	} ) => {
-		// Fetch the public block-types REST endpoint (anonymous).
-		const ctx = await pwRequest.newContext( { baseURL } );
-		const res = await ctx.get( '/wp-json/wp/v2/block-types' );
-		expect( res.status() ).toBe( 200 );
-
-		const blocks = ( await res.json() ) as Array< { name: string } >;
-		const names = blocks.map( ( b ) => b.name );
-
-		expect( names ).toContain( 'betterplace-embed/donation' );
-	} );
-} );
