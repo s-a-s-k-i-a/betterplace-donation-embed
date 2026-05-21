@@ -15,11 +15,15 @@ class Betterplace_Donation_Embed_Shortcode {
 	const TAG = 'betterplace_donation';
 
 	/**
+	 * Shared renderer instance.
+	 *
 	 * @var Betterplace_Donation_Embed_Renderer
 	 */
 	private $renderer;
 
 	/**
+	 * Construct the shortcode handler.
+	 *
 	 * @param Betterplace_Donation_Embed_Renderer $renderer Shared renderer.
 	 */
 	public function __construct( Betterplace_Donation_Embed_Renderer $renderer ) {

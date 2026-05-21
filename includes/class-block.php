@@ -13,11 +13,15 @@ defined( 'ABSPATH' ) || exit;
 class Betterplace_Donation_Embed_Block {
 
 	/**
+	 * Shared renderer instance.
+	 *
 	 * @var Betterplace_Donation_Embed_Renderer
 	 */
 	private $renderer;
 
 	/**
+	 * Construct the block registrar.
+	 *
 	 * @param Betterplace_Donation_Embed_Renderer $renderer Shared renderer.
 	 */
 	public function __construct( Betterplace_Donation_Embed_Renderer $renderer ) {

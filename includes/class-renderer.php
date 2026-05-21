@@ -16,16 +16,16 @@ defined( 'ABSPATH' ) || exit;
  */
 class Betterplace_Donation_Embed_Renderer {
 
-	const DOMAIN          = 'https://www.betterplace.org';
-	const FALLBACK_PATH   = '/de/donate/platform/projects/';
-	const DEFAULT_LANG    = 'de';
-	const DEFAULT_TYPE    = 'project';
-	const DEFAULT_COLOR   = '6c9c2e';
-	const DEFAULT_BG      = 'ffffff';
-	const DEFAULT_AMOUNT  = 10;
-	const DEFAULT_INT     = 'single';
-	const DEFAULT_WIDTH   = 600;
-	const DEFAULT_HEIGHT  = 800;
+	const DOMAIN         = 'https://www.betterplace.org';
+	const FALLBACK_PATH  = '/de/donate/platform/projects/';
+	const DEFAULT_LANG   = 'de';
+	const DEFAULT_TYPE   = 'project';
+	const DEFAULT_COLOR  = '6c9c2e';
+	const DEFAULT_BG     = 'ffffff';
+	const DEFAULT_AMOUNT = 10;
+	const DEFAULT_INT    = 'single';
+	const DEFAULT_WIDTH  = 600;
+	const DEFAULT_HEIGHT = 800;
 
 	/**
 	 * Site-wide defaults from the settings page.
@@ -35,6 +35,8 @@ class Betterplace_Donation_Embed_Renderer {
 	private $defaults;
 
 	/**
+	 * Construct the renderer with optional site-wide defaults.
+	 *
 	 * @param array<string,mixed> $defaults Settings-page defaults.
 	 */
 	public function __construct( array $defaults = array() ) {

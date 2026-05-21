@@ -109,9 +109,9 @@ class Betterplace_Donation_Embed_Admin {
 	/**
 	 * Register a select field.
 	 *
-	 * @param string                $key     Option key.
-	 * @param string                $label   Human label.
-	 * @param array<string,string>  $options Value => Label map.
+	 * @param string               $key     Option key.
+	 * @param string               $label   Human label.
+	 * @param array<string,string> $options Value => Label map.
 	 */
 	private function add_select_field( $key, $label, array $options ) {
 		add_settings_field(
