@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	backupGlobals="false"
+	colors="true"
+	beStrictAboutCoversAnnotation="true"
+	beStrictAboutOutputDuringTests="true"
+	beStrictAboutTestsThatDoNotTestAnything="true"
+	beStrictAboutTodoAnnotatedTests="true"
+	verbose="true">
+	<testsuites>
+		<testsuite name="all">
+			<directory suffix=".php">./tests/</directory>
+			<exclude>./tests/bootstrap.php</exclude>
+			<exclude>./tests/e2e</exclude>
+			<exclude>./tests/smoke</exclude>
+		</testsuite>
+	</testsuites>
+</phpunit>

@@ -1,0 +1,17 @@
+{
+  "name": "betterplace-donation-embed-e2e",
+  "version": "0.1.0",
+  "description": "Playwright E2E tests against a wp-env instance with the plugin active.",
+  "private": true,
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}

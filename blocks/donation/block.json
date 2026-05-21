@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "betterplace-embed/donation",
+  "version": "0.1.0",
+  "title": "Betterplace-Spendenformular",
+  "category": "widgets",
+  "icon": "heart",
+  "description": "Bindet das Spendenformular von betterplace.org als Iframe ein — ohne den fragilen JS-Loader.",
+  "keywords": ["betterplace", "spende", "donation", "iframe"],
+  "textdomain": "betterplace-donation-embed",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "project_id": { "type": "integer", "default": 0 },
+    "receiver_type": { "type": "string", "default": "project" },
+    "lang": { "type": "string", "default": "de" },
+    "color": { "type": "string", "default": "6c9c2e" },
+    "background_color": { "type": "string", "default": "ffffff" },
+    "default_amount": { "type": "integer", "default": 10 },
+    "default_interval": { "type": "string", "default": "single" },
+    "default_payment_method": { "type": "string", "default": "" },
+    "bottom_logo": { "type": "boolean", "default": true },
+    "width": { "type": "integer", "default": 600 },
+    "height": { "type": "integer", "default": 800 }
+  },
+  "editorScript": "file:./edit.js",
+  "style": "file:./style.css"
+}

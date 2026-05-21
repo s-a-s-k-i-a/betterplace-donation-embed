@@ -1,0 +1,43 @@
+{
+    "name": "s-a-s-k-i-a/betterplace-donation-embed",
+    "description": "WordPress plugin that embeds the betterplace.org donation iframe via shortcode and Gutenberg block — without the upstream JS loader that pollutes the global lexical scope.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "wordpress",
+        "wordpress-plugin",
+        "betterplace",
+        "donation",
+        "iframe",
+        "spende",
+        "spendenformular",
+        "gutenberg-block",
+        "shortcode"
+    ],
+    "homepage": "https://github.com/s-a-s-k-i-a/betterplace-donation-embed",
+    "support": {
+        "issues": "https://github.com/s-a-s-k-i-a/betterplace-donation-embed/issues",
+        "source": "https://github.com/s-a-s-k-i-a/betterplace-donation-embed"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6 || ^10.5",
+        "yoast/phpunit-polyfills": "^2.0",
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "lint": "phpcs --standard=phpcs.xml.dist",
+        "lint:fix": "phpcbf --standard=phpcs.xml.dist",
+        "test": "phpunit"
+    }
+}

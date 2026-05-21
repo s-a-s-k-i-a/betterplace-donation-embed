@@ -1,0 +1,36 @@
+/* Minimal admin styling for the settings page. */
+.bpde-settings-wrap {
+  max-width: 720px;
+}
+
+.bpde-settings-wrap .description {
+  color: #50575e;
+  margin: .5em 0 1.5em;
+}
+
+.bpde-settings-wrap input[type="text"],
+.bpde-settings-wrap input[type="number"],
+.bpde-settings-wrap select {
+  min-width: 14em;
+}
+
+.bpde-usage {
+  background: #f6f7f7;
+  border: 1px solid #dcdcde;
+  border-radius: 4px;
+  padding: .75em 1.25em;
+}
+
+.bpde-usage pre {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 3px;
+  padding: .75em 1em;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+.bpde-usage h3 {
+  margin-top: 1em;
+  font-size: 14px;
+}

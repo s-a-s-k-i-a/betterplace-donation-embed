@@ -1,0 +1,30 @@
+# PHP / Composer
+/vendor/
+composer.lock
+
+# Node / Block build
+/node_modules/
+/build/
+/blocks/donation/build/
+package-lock.json
+
+# Tests
+/tests/e2e/test-results/
+/tests/e2e/playwright-report/
+/tests/e2e/.cache/
+/tests/smoke/.wp-env-state.json
+/.phpunit.result.cache
+
+# wp-env local state
+/wp-env/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
