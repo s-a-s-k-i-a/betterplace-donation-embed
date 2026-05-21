@@ -12,6 +12,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       betterplace-donation-embed
  * Domain Path:       /languages
+ * Update URI:        false
  *
  * @package Betterplace_Donation_Embed
  */
