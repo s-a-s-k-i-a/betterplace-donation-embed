@@ -4,7 +4,7 @@ Tags:              betterplace, donation, spende, spendenformular, iframe, short
 Requires at least: 6.0
 Tested up to:      6.6
 Requires PHP:      7.4
-Stable tag:        0.1.3
+Stable tag:        0.1.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ Ja — `receiver_type="fundraising_event"` oder `receiver_type="organisation"` s
 Der iframe-resizer ist genau der Code, der den `$`-Konflikt im Upstream-Loader verursacht. Stattdessen wird hier eine feste Höhe gesetzt (Default 800 px), die für Step 1 + Spenderdaten ausreicht.
 
 == Changelog ==
+
+= 0.1.4 =
+* Responsiveness-Fix: Auf Viewports schmaler als die konfigurierte Iframe-Breite (z. B. Smartphone bei eingestellten 600 px) füllt das Iframe jetzt die verfügbare Breite des Containers statt horizontal überzulaufen. Realisiert via instance-scopiertem `@media (max-width: <user-width>px)`-Block, der die feste Width auf 100 % überschreibt.
+* Auto-Update-Fix: Das Plugin aktiviert die Shared-Lizenz beim ersten `admin_init` automatisch gegen den EDD-Store (`edd_action=activate_license` mit `home_url()`). Ohne diese Aktivierung antwortete EDD-SL beim Update-Versuch mit HTTP 401 ("Aktualisierungs-Paket nicht verfügbar"). Idempotent: re-aktiviert nur bei URL-Wechsel oder nach 30 Tagen.
 
 = 0.1.3 =
 * Bug-Fix: das Iframe wurde in `display: flex`-Containern (z. B. Divi-Pixel-Popups) auf die intrinsische Breite des Fallback-Links geschrumpft (~320 px) statt der konfigurierten Breite (z. B. 600 px). Der Wrapper nutzt jetzt `width: <px>` statt `max-width: <px>`, sodass die Breite die Container-Kette nach oben propagiert. `max-width: 100%` sorgt weiterhin für Responsiveness auf schmalen Viewports.

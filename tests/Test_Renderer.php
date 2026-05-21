@@ -236,10 +236,10 @@ class Test_Renderer extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Regression: the wrapper must use explicit `width` (not just `max-width`)
-	 * so the iframe stays at the configured size inside flex containers
-	 * (Divi Pixel popups etc.) where block descendants would otherwise shrink
-	 * to intrinsic content width.
+	 * Regression (v0.1.3): the wrapper must use explicit `width` (not just
+	 * `max-width`) so the iframe stays at the configured size inside flex
+	 * containers (Divi Pixel popups etc.) where block descendants would
+	 * otherwise shrink to intrinsic content width.
 	 *
 	 * @covers ::render
 	 */
@@ -248,5 +248,44 @@ class Test_Renderer extends WP_UnitTestCase {
 
 		$this->assertStringContainsString( 'width:600px;max-width:100%', $html );
 		$this->assertStringNotContainsString( 'max-width:600px', $html );
+	}
+
+	/**
+	 * v0.1.4: the wrapper must carry a per-instance class plus an inline
+	 * media query that collapses width to 100% when the viewport is narrower
+	 * than the user-configured width (smartphone responsiveness).
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_emits_responsive_media_query_for_configured_width() {
+		$html = $this->renderer()->render( array( 'project_id' => 4667, 'width' => 720 ) );
+
+		// One per-instance class on the wrapper.
+		$this->assertMatchesRegularExpression( '/class="bpde-embed bpde-embed--i\d+"/', $html );
+
+		// Scoped media query overrides width to 100% below the configured width.
+		$this->assertMatchesRegularExpression(
+			'/<style>@media\s*\(max-width:720px\)\{\.bpde-embed--i\d+\{width:100%;\}\}<\/style>/',
+			$html
+		);
+	}
+
+	/**
+	 * Two renders on the same request must get different per-instance
+	 * classes — otherwise their media queries would conflict.
+	 *
+	 * @covers ::render
+	 */
+	public function test_render_instance_classes_are_unique_per_call() {
+		$r = $this->renderer();
+		$one = $r->render( array( 'project_id' => 4667, 'width' => 600 ) );
+		$two = $r->render( array( 'project_id' => 4667, 'width' => 800 ) );
+
+		preg_match( '/bpde-embed--(i\d+)/', $one, $m1 );
+		preg_match( '/bpde-embed--(i\d+)/', $two, $m2 );
+
+		$this->assertNotEmpty( $m1[1] );
+		$this->assertNotEmpty( $m2[1] );
+		$this->assertNotSame( $m1[1], $m2[1] );
 	}
 }

@@ -28,6 +28,14 @@ class Betterplace_Donation_Embed_Renderer {
 	const DEFAULT_HEIGHT = 800;
 
 	/**
+	 * Per-page instance counter — used to generate unique class names so each
+	 * instance can carry its own width-specific media query.
+	 *
+	 * @var int
+	 */
+	private static $instance_counter = 0;
+
+	/**
 	 * Site-wide defaults from the settings page.
 	 *
 	 * @var array<string,mixed>
@@ -100,26 +108,35 @@ class Betterplace_Donation_Embed_Renderer {
 		$fallback_url   = self::DOMAIN . self::FALLBACK_PATH . $cfg['receiver_id'];
 		$fallback_label = __( 'Alternativ direkt auf betterplace.org spenden', 'betterplace-donation-embed' );
 
+		++self::$instance_counter;
+		$instance_class = 'bpde-embed--i' . self::$instance_counter;
+		$width          = (int) $cfg['width'];
+
 		/*
-		 * `width: <px>` (not just `max-width`) is intentional. Plain `max-width`
-		 * lets the wrapper collapse to its parent's width — which breaks inside
-		 * `display: flex` containers (e.g. Divi Pixel popups), where block
-		 * descendants shrink to their content's intrinsic size instead of the
-		 * flex container's width. Setting `width` propagates the intended size
-		 * up the ancestor chain so the section/row/column grow to match.
-		 * `max-width: 100%` keeps it responsive on narrow viewports.
+		 * Width is set in two ways:
+		 *
+		 * 1. Inline `width: <px>; max-width: 100%`. Forces the ancestor chain
+		 *    to grow to the configured size inside flex containers (e.g. Divi
+		 *    Pixel popups), where block descendants would otherwise shrink to
+		 *    their content's intrinsic width.
+		 *
+		 * 2. A scoped media query (`max-width: <user-width>px`) that overrides
+		 *    width to 100% on viewports narrower than the configured size — so
+		 *    on smartphones the iframe fills the available width instead of
+		 *    overflowing horizontally. The media query is per-instance because
+		 *    each shortcode/block can carry a different configured width.
 		 */
-		$wrapper_style = sprintf(
-			'width:%1$dpx;max-width:100%%;margin-inline:auto;',
-			(int) $cfg['width']
-		);
-		$iframe_style  = sprintf(
-			'display:block;border:0;width:100%%;height:%dpx;background:transparent;',
-			(int) $cfg['height']
+		$wrapper_style    = sprintf( 'width:%1$dpx;max-width:100%%;margin-inline:auto;', $width );
+		$iframe_style     = sprintf( 'display:block;border:0;width:100%%;height:%dpx;background:transparent;', (int) $cfg['height'] );
+		$responsive_style = sprintf(
+			'<style>@media (max-width:%1$dpx){.%2$s{width:100%%;}}</style>',
+			$width,
+			$instance_class
 		);
 
-		return sprintf(
-			'<div class="bpde-embed" data-project-id="%1$d" style="%2$s"><iframe src="%3$s" title="%4$s" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="%5$s"></iframe><p class="bpde-fallback" style="text-align:center;margin:.75em 0 0;font-size:.9em;"><a href="%6$s" target="_blank" rel="noopener">%7$s</a></p></div>',
+		return $responsive_style . sprintf(
+			'<div class="bpde-embed %1$s" data-project-id="%2$d" style="%3$s"><iframe src="%4$s" title="%5$s" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" style="%6$s"></iframe><p class="bpde-fallback" style="text-align:center;margin:.75em 0 0;font-size:.9em;"><a href="%7$s" target="_blank" rel="noopener">%8$s</a></p></div>',
+			esc_attr( $instance_class ),
 			(int) $cfg['receiver_id'],
 			esc_attr( $wrapper_style ),
 			esc_url( $url ),

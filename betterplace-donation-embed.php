@@ -3,7 +3,7 @@
  * Plugin Name:       Betterplace Donation Embed
  * Plugin URI:        https://github.com/s-a-s-k-i-a/betterplace-donation-embed
  * Description:       Bindet das betterplace.org-Spendenformular sauber per Shortcode und Gutenberg-Block ein — ohne den fragilen Upstream-JS-Loader, der den globalen Lexical-Scope verschmutzt.
- * Version:           0.1.3
+ * Version:           0.1.4
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            wp-studio.dev
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BPDE_VERSION', '0.1.3' );
+define( 'BPDE_VERSION', '0.1.4' );
 define( 'BPDE_PLUGIN_FILE', __FILE__ );
 define( 'BPDE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BPDE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -62,6 +62,11 @@ add_action(
 		bpde_init_updater();
 	}
 );
+
+// Auto-activate the shared license for the current site on admin requests,
+// so EDD-SL serves the update package URL without manual setup. Runs
+// idempotently (only re-hits the store if URL changed or after 30 days).
+add_action( 'admin_init', 'bpde_maybe_activate_license' );
 
 /**
  * Wire up the EDD Software Licensing plugin updater so installed copies
@@ -108,4 +113,77 @@ function bpde_init_updater() {
 			'beta'    => false,
 		)
 	);
+}
+
+/**
+ * Activate the shared license for this site against the EDD store.
+ *
+ * EDD Software Licensing only serves the update package URL to sites
+ * whose license has been activated for that site's home_url. Without
+ * activation, get_version returns an empty `package` and WordPress
+ * shows the update banner but fails the actual download with HTTP 401.
+ *
+ * This runs on admin_init and is idempotent: it only POSTs to the
+ * store on the first run after install (or after the home_url changes,
+ * or every 30 days as a refresh safety net).
+ */
+function bpde_maybe_activate_license() {
+	if ( defined( 'BPDE_DISABLE_UPDATER' ) && BPDE_DISABLE_UPDATER ) {
+		return;
+	}
+	if ( apply_filters( 'bpde_disable_updater', false ) ) {
+		return;
+	}
+
+	$site_url = home_url();
+	$state    = get_option( 'bpde_license_activation', array() );
+
+	$needs_activation = (
+		empty( $state['site_url'] )
+		|| $state['site_url'] !== $site_url
+		|| empty( $state['activated_at'] )
+		|| ( time() - (int) $state['activated_at'] ) > 30 * DAY_IN_SECONDS
+	);
+
+	if ( ! $needs_activation ) {
+		return;
+	}
+
+	$license = apply_filters( 'bpde_license_key', BPDE_EDD_LICENSE_KEY );
+
+	$response = wp_remote_post(
+		BPDE_EDD_STORE_URL,
+		array(
+			'timeout'   => 15,
+			'sslverify' => true,
+			'body'      => array(
+				'edd_action' => 'activate_license',
+				'license'    => $license,
+				'item_id'    => BPDE_EDD_ITEM_ID,
+				'url'        => $site_url,
+			),
+		)
+	);
+
+	if ( is_wp_error( $response ) ) {
+		return; // Quiet failure — next admin_init retries.
+	}
+
+	$body = json_decode( wp_remote_retrieve_body( $response ), true );
+	if ( ! is_array( $body ) || empty( $body['success'] ) ) {
+		return;
+	}
+
+	update_option(
+		'bpde_license_activation',
+		array(
+			'site_url'     => $site_url,
+			'activated_at' => time(),
+			'license'      => 'valid',
+		),
+		false
+	);
+
+	// Force a fresh update-info pull on the next request.
+	delete_site_transient( 'update_plugins' );
 }
