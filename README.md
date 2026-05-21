@@ -132,7 +132,7 @@ npm run test:e2e
 
 ## Upstream
 
-The upstream bug in `load_donation_iframe.js` is tracked in [this report](https://github.com/betterplace/betterplace_apidocs/issues) — link to the specific issue is added once filed. The recommended upstream fix is to wrap the loader bundle in an IIFE (`(function(){…})();`) before serving it, which moves all declarations into a function scope and avoids global lexical pollution.
+The upstream loader behavior is documented in a docs-only PR at [betterplace/betterplace_apidocs#11](https://github.com/betterplace/betterplace_apidocs/pull/11). The recommended upstream fix is to wrap the loader bundle in an IIFE (`(function(){…})();`) before serving it, which moves all declarations into a function scope and avoids global lexical pollution entirely. Serving the loader as `<script type="module">` would also work.
 
 ## License
 
