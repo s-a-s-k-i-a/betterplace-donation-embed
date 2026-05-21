@@ -1,7 +1,14 @@
 /* Frontend + editor styles for the betterplace-embed/donation block. */
 .bpde-embed {
-  max-width: 600px;
-  margin: 0 auto;
+  /*
+   * `width` and `max-width` are set inline by the renderer (per-instance
+   * user-configurable). Defaults below act as a fallback for installs that
+   * use the block without explicit width (very unusual — block.json sets a
+   * default of 600).
+   */
+  width: 600px;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 .bpde-embed iframe {

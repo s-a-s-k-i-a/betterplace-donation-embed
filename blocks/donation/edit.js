@@ -70,7 +70,7 @@
 					'&default_payment_method=' + encodeURIComponent( attrs.default_payment_method || '' ) +
 					'&default_interval=' + encodeURIComponent( attrs.default_interval || 'single' );
 
-				preview = el( 'div', { className: 'bpde-block-preview', style: { maxWidth: ( attrs.width || 600 ) + 'px', margin: '0 auto' } },
+				preview = el( 'div', { className: 'bpde-block-preview', style: { width: ( attrs.width || 600 ) + 'px', maxWidth: '100%', marginInline: 'auto' } },
 					el( 'div', {
 						className: 'bpde-block-preview__overlay',
 						'aria-hidden': 'true',

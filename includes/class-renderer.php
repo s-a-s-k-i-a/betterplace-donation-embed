@@ -100,7 +100,19 @@ class Betterplace_Donation_Embed_Renderer {
 		$fallback_url   = self::DOMAIN . self::FALLBACK_PATH . $cfg['receiver_id'];
 		$fallback_label = __( 'Alternativ direkt auf betterplace.org spenden', 'betterplace-donation-embed' );
 
-		$wrapper_style = sprintf( 'max-width:%dpx;margin:0 auto;', (int) $cfg['width'] );
+		/*
+		 * `width: <px>` (not just `max-width`) is intentional. Plain `max-width`
+		 * lets the wrapper collapse to its parent's width — which breaks inside
+		 * `display: flex` containers (e.g. Divi Pixel popups), where block
+		 * descendants shrink to their content's intrinsic size instead of the
+		 * flex container's width. Setting `width` propagates the intended size
+		 * up the ancestor chain so the section/row/column grow to match.
+		 * `max-width: 100%` keeps it responsive on narrow viewports.
+		 */
+		$wrapper_style = sprintf(
+			'width:%1$dpx;max-width:100%%;margin-inline:auto;',
+			(int) $cfg['width']
+		);
 		$iframe_style  = sprintf(
 			'display:block;border:0;width:100%%;height:%dpx;background:transparent;',
 			(int) $cfg['height']
