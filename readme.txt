@@ -4,7 +4,7 @@ Tags:              betterplace, donation, spende, spendenformular, iframe, short
 Requires at least: 6.0
 Tested up to:      6.6
 Requires PHP:      7.4
-Stable tag:        0.1.1
+Stable tag:        0.1.2
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ Ja — `receiver_type="fundraising_event"` oder `receiver_type="organisation"` s
 Der iframe-resizer ist genau der Code, der den `$`-Konflikt im Upstream-Loader verursacht. Stattdessen wird hier eine feste Höhe gesetzt (Default 800 px), die für Step 1 + Spenderdaten ausreicht.
 
 == Changelog ==
+
+= 0.1.2 =
+* Zero-Config-Auto-Update: das Plugin enthält ab sofort einen Shared-License-Key für die EDD-Software-Licensing-Update-API. Es ist kein manueller Lizenzschlüssel-Eintrag durch die Nutzer:innen mehr nötig — Updates werden automatisch im WP-Backend angezeigt und können wie bei jedem anderen Plugin direkt installiert werden.
+* Override: Self-Hoster können `define( 'BPDE_EDD_LICENSE_KEY', '…' );` setzen oder den Filter `bpde_license_key` nutzen.
 
 = 0.1.1 =
 * Auto-Update-Client via Easy Digital Downloads Software Licensing: das Plugin fragt nun bei `https://isla-stud.io` (Item-ID 3610) nach neuen Versionen, sodass Updates im WP-Backend wie bei jedem anderen Plugin angezeigt und installiert werden können. Kein Lizenzschlüssel erforderlich (kostenloser Download).
