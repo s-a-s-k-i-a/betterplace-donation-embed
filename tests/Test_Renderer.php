@@ -247,7 +247,14 @@ class Test_Renderer extends WP_UnitTestCase {
 		$html = $this->renderer()->render( array( 'project_id' => 4667, 'width' => 600 ) );
 
 		$this->assertStringContainsString( 'width:600px;max-width:100%', $html );
-		$this->assertStringNotContainsString( 'max-width:600px', $html );
+
+		// The wrapper's own style attribute must not use `max-width:600px`
+		// (that would re-introduce the flex-shrink bug). It's fine for the
+		// scoped media query to contain "max-width:600px" — that's the
+		// breakpoint, not the wrapper rule.
+		preg_match( '/style="([^"]*)"/', $html, $m, 0, strpos( $html, '<div class="bpde-embed' ) );
+		$this->assertNotEmpty( $m[1] );
+		$this->assertStringNotContainsString( 'max-width:600px', $m[1] );
 	}
 
 	/**
